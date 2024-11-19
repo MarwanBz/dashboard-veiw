@@ -1,6 +1,8 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
+import NavBar from "../layouts/navbar";
+import SideBar from "../layouts/sidebar";
 import localFont from "next/font/local";
 
 const geistSans = localFont({
@@ -27,10 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F6F9FF]`}
       >
-        <main>
-        {children}
+        <SideBar />
+
+        <main className="pl-64">
+          <NavBar />
+          {children}
         </main>
       </body>
     </html>
