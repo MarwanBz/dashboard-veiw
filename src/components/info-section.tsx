@@ -1,10 +1,10 @@
 'use client'
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { CustomModal } from "../components/ui/CustomModal"
 import Image from "next/image"
+import PersonalInfoForm from "../components/PersonalInfoForm"
 import SkillsForm from "../components/SkillsForm"
 import { useState } from "react"
 
@@ -23,21 +23,38 @@ export default function InfoSection({
 }: InfoSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [savedSkills, setSavedSkills] = useState<string[]>([])
+  const [availableSkills, setAvailableSkills] = useState([
+    "UI Designer",
+    "UX Designer",
+    "Product Manager",
+    "Developer",
+    "Team Lead",
+    "Scrum Master",
+    "PMO",
+    "Team Work",
+    "Efficacy",
+    "Graphic Designer"
+  ])
 
   const handleOpenModal = () => {
     setIsModalOpen(true)
   }
 
-  const handleSaveChanges = (skills: string[]) => {
+  const handleSaveChanges = (skills: string[], available: string[]) => {
     setSavedSkills(skills)
+    setAvailableSkills(available)
     setIsModalOpen(false)
   }
 
   const renderForm = () => {
-    if (formType === 'skills') {
-      return <SkillsForm savedSkills={savedSkills} onSave={handleSaveChanges} />
+    switch (formType) {
+      case 'skills':
+        return <SkillsForm savedSkills={savedSkills} availableSkills={availableSkills} onSave={handleSaveChanges} />
+      case 'personal':
+        return <PersonalInfoForm onClose={() => setIsModalOpen(false)} />
+      default:
+        return null
     }
-    return null
   }
 
   return (
@@ -81,17 +98,14 @@ export default function InfoSection({
         )}
       </div>
 
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[425px] p-0">
-          <DialogHeader className="p-6 pb-0">
-            <DialogTitle>{title}</DialogTitle>
-            <p className="text-sm text-gray-500">Explore and showcase your skills</p>
-          </DialogHeader>
-          <div className="p-6">
-            {renderForm()}
-          </div>
-        </DialogContent>
-      </Dialog>
+      <CustomModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={title}
+        width="sm:max-w-[600px]"
+      >
+        {renderForm()}
+      </CustomModal>
     </div>
   )
 }

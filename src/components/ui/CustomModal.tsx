@@ -22,7 +22,6 @@ export function CustomModal({ isOpen, onClose, title, children }: CustomModalPro
         </DialogHeader>
         <div className="p-4">
           {children}
-          <Button onClick={onClose} className="mt-4">Close</Button>
         </div>
       </DialogContent>
     </Dialog>

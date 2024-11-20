@@ -1,32 +1,28 @@
 'use client'
 
+import { useEffect, useState } from "react"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { X } from 'lucide-react'
-import { useState } from "react"
 
 interface SkillsFormProps {
   savedSkills: string[]
-  onSave: (skills: string[]) => void
+  availableSkills: string[]
+  onSave: (skills: string[], availableSkills: string[]) => void
 }
 
-export default function SkillsForm({ savedSkills, onSave }: SkillsFormProps) {
-  const [availableSkills, setAvailableSkills] = useState([
-    "UI Designer",
-    "UX Designer",
-    "Product Manager",
-    "Developer",
-    "Team Lead",
-    "Scrum Master",
-    "PMO",
-    "Team Work",
-    "Efficacy",
-    "Graphic Designer"
-  ])
+export default function SkillsForm({ savedSkills, availableSkills: initialAvailableSkills, onSave }: SkillsFormProps) {
+  const [availableSkills, setAvailableSkills] = useState<string[]>([])
   const [selectedSkills, setSelectedSkills] = useState<string[]>(savedSkills)
   const [searchTerm, setSearchTerm] = useState("")
+
+  useEffect(() => {
+    // Filter out saved skills from available skills
+    setAvailableSkills(initialAvailableSkills.filter(skill => !savedSkills.includes(skill)))
+  }, [initialAvailableSkills, savedSkills])
 
   const handleSkillClick = (skill: string) => {
     setAvailableSkills(availableSkills.filter(s => s !== skill))
@@ -94,7 +90,7 @@ export default function SkillsForm({ savedSkills, onSave }: SkillsFormProps) {
 
       <Button 
         className="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white"
-        onClick={() => onSave(selectedSkills)}
+        onClick={() => onSave(selectedSkills, availableSkills)}
       >
         Save Changes
       </Button>
