@@ -33,6 +33,7 @@ export default function Home() {
           title="Education"
           description="Add your educational background to highlight your academic achievements."
           iconSrc="/assets/img/edu.png"
+          formType="education"
         />
       </div>
 

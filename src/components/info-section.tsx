@@ -5,6 +5,7 @@ import { Flag, Globe, Mail, MapPin, Phone, User } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CustomModal } from "../components/ui/CustomModal"
+import EducationForm from "./EducationForm"
 import ExperienceForm from "../components/ExperienceForm"
 import Image from "next/image"
 import PersonalInfoForm from "../components/PersonalInfoForm"
@@ -36,6 +37,12 @@ interface Experience {
   description: string;
 }
 
+interface Education {
+  institution: string;
+  degree: string;
+  fieldOfStudy: string;
+}
+
 export default function InfoSection({
   title,
   description,
@@ -58,7 +65,7 @@ export default function InfoSection({
   ])
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null)
   const [experiences, setExperiences] = useState<Experience[]>([])
-
+  const [education, setEducation] = useState<Education[]>([])
   const handleOpenModal = () => {
     setIsModalOpen(true)
   }
@@ -79,6 +86,11 @@ export default function InfoSection({
     setIsModalOpen(false)
   }
 
+  const handleSaveEducation = (education: Education[]) => {
+    setEducation(education)
+    setIsModalOpen(false)
+  }
+
   const renderForm = () => {
     switch (formType) {
       case 'skills':
@@ -87,10 +99,12 @@ export default function InfoSection({
         return <PersonalInfoForm onClose={() => setIsModalOpen(false)} onSave={handleSavePersonalInfo} />
       case 'experience':
         return <ExperienceForm onSave={handleSaveExperience} initialExperiences={experiences} />
+      case 'education':
+        return <EducationForm onSave={handleSaveEducation} initialEducation={education} />
       default:
         return null
     }
-  }
+  } 
 
   return (
     <div className="p-4">
