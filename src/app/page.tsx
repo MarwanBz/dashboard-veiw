@@ -41,6 +41,7 @@ export default function Home() {
           title="Experience"
           description="Present your experience to emphasize your professional background."
           iconSrc="/assets/img/exp.png"
+          formType="experience"
         />
       </div>
     </div>

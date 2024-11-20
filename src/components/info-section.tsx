@@ -5,6 +5,7 @@ import { Flag, Globe, Mail, MapPin, Phone, User } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CustomModal } from "../components/ui/CustomModal"
+import ExperienceForm from "../components/ExperienceForm"
 import Image from "next/image"
 import PersonalInfoForm from "../components/PersonalInfoForm"
 import SkillsForm from "../components/SkillsForm"
@@ -25,6 +26,14 @@ interface PersonalInfo {
   mobileNumber: string;
   region: string;
   city: string;
+}
+
+interface Experience {
+  startDate: string;
+  endDate: string;
+  company: string;
+  division: string;
+  description: string;
 }
 
 export default function InfoSection({
@@ -48,6 +57,7 @@ export default function InfoSection({
     "Graphic Designer"
   ])
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null)
+  const [experiences, setExperiences] = useState<Experience[]>([])
 
   const handleOpenModal = () => {
     setIsModalOpen(true)
@@ -64,12 +74,19 @@ export default function InfoSection({
     setIsModalOpen(false)
   }
 
+  const handleSaveExperience = (experience: Experience) => {
+    setExperiences([...experiences, experience])
+    setIsModalOpen(false)
+  }
+
   const renderForm = () => {
     switch (formType) {
       case 'skills':
         return <SkillsForm savedSkills={savedSkills} availableSkills={availableSkills} onSave={handleSaveChanges} />
       case 'personal':
         return <PersonalInfoForm onClose={() => setIsModalOpen(false)} onSave={handleSavePersonalInfo} />
+      case 'experience':
+        return <ExperienceForm onSave={handleSaveExperience} initialExperiences={experiences} />
       default:
         return null
     }
@@ -181,6 +198,25 @@ export default function InfoSection({
                 </div>
               </div>
             </div>
+          </div>
+        ) : formType === "experience" && experiences.length > 0 ? (
+          <div className="space-y-6">
+            {experiences.map((experience, index) => (
+              <div key={index} className="relative pl-6">
+                <div className="absolute left-0 top-1.5 w-3 h-3 bg-[#0066FF] rounded-full" />
+                <div className="space-y-1">
+                  <h3 className="font-medium text-base">
+                    {experience.startDate} to {experience.endDate}
+                  </h3>
+                  <div className="text-sm font-medium text-[#0A0F51]">
+                    {experience.company}, {experience.division}
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {experience.description}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <>

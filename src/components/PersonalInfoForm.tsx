@@ -157,7 +157,6 @@ export default function PersonalInfoForm({ onClose, onSave }: PersonalInfoFormPr
           </div>
         </div>
       </div>
-
       <Button 
         type="submit"
         className="w-full bg-[#0066FF] hover:bg-blue-600 text-white font-medium py-6 rounded-lg"
