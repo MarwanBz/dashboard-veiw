@@ -38,9 +38,12 @@ interface Experience {
 }
 
 interface Education {
-  institution: string;
-  degree: string;
-  fieldOfStudy: string;
+  school: string
+  degree: string
+  fieldOfStudy: string
+  startDate: string
+  endDate: string
+  grade: string
 }
 
 export default function InfoSection({
@@ -86,8 +89,8 @@ export default function InfoSection({
     setIsModalOpen(false)
   }
 
-  const handleSaveEducation = (education: Education[]) => {
-    setEducation(education)
+  const handleSaveEducation = (newEducation: Education[]) => {
+    setEducation(newEducation)
     setIsModalOpen(false)
   }
 
@@ -100,7 +103,7 @@ export default function InfoSection({
       case 'experience':
         return <ExperienceForm onSave={handleSaveExperience} initialExperiences={experiences} />
       case 'education':
-        return <EducationForm onSave={handleSaveEducation} initialEducation={education} />
+        return <EducationForm onSave={handleSaveEducation} initialEducation={education} onClose={() => setIsModalOpen(false)} />
       default:
         return null
     }
@@ -228,6 +231,30 @@ export default function InfoSection({
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {experience.description}
                   </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : formType === "education" && education.length > 0 ? (
+          <div className="space-y-6 w-full">
+            {education.map((edu, index) => (
+              <div key={index} className="relative pl-6 text-left">
+                <div className="absolute left-0 top-1.5 w-3 h-3 bg-[#0066FF] rounded-full" />
+                <div className="space-y-1">
+                  <h3 className="font-medium text-base">
+                    {edu.startDate} - {edu.endDate}
+                  </h3>
+                  <div className="text-sm font-medium text-[#0A0F51]">
+                    {edu.school}
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {edu.degree} in {edu.fieldOfStudy}
+                  </p>
+                  {edu.grade && (
+                    <p className="text-sm text-muted-foreground">
+                      Grade: {edu.grade}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
