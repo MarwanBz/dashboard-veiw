@@ -23,6 +23,7 @@ export default function Home() {
           title="Skills"
           description="Highlight your skills to make a strong impression."
           iconSrc="/assets/img/skills.png"
+          formType="skills"
         />
       </div>
 
