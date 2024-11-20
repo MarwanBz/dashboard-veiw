@@ -15,6 +15,7 @@ export default function Home() {
           title="Personal Information"
           description="Add your personal information to maintain a professional profile."
           iconSrc="/assets/img/pers.png"
+          formType="personal"
         />
       </div>
 
