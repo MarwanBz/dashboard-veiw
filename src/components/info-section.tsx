@@ -1,5 +1,7 @@
 'use client'
 
+import { Flag, Globe, Mail, MapPin, Phone, User } from "lucide-react"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CustomModal } from "../components/ui/CustomModal"
@@ -13,6 +15,16 @@ interface InfoSectionProps {
   description: string
   iconSrc: string
   formType: 'personal' | 'education' | 'skills' | 'experience'
+}
+
+interface PersonalInfo {
+  nationality: string;
+  dateOfBirth: string;
+  gender: string;
+  email: string;
+  mobileNumber: string;
+  region: string;
+  city: string;
 }
 
 export default function InfoSection({
@@ -35,6 +47,7 @@ export default function InfoSection({
     "Efficacy",
     "Graphic Designer"
   ])
+  const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null)
 
   const handleOpenModal = () => {
     setIsModalOpen(true)
@@ -46,12 +59,17 @@ export default function InfoSection({
     setIsModalOpen(false)
   }
 
+  const handleSavePersonalInfo = (info: PersonalInfo) => {
+    setPersonalInfo(info)
+    setIsModalOpen(false)
+  }
+
   const renderForm = () => {
     switch (formType) {
       case 'skills':
         return <SkillsForm savedSkills={savedSkills} availableSkills={availableSkills} onSave={handleSaveChanges} />
       case 'personal':
-        return <PersonalInfoForm onClose={() => setIsModalOpen(false)} />
+        return <PersonalInfoForm onClose={() => setIsModalOpen(false)} onSave={handleSavePersonalInfo} />
       default:
         return null
     }
@@ -70,9 +88,9 @@ export default function InfoSection({
           Edit
         </Button>
       </div>
-      
+
       <div className="flex flex-col items-center justify-center text-center border rounded-lg bg-white shadow p-4">
-        {savedSkills.length > 0 ? (
+        {formType === "skills" && savedSkills.length > 0 ? (
           <div className="flex flex-wrap gap-2 justify-center">
             {savedSkills.map((skill) => (
               <Badge
@@ -83,6 +101,86 @@ export default function InfoSection({
                 {skill}
               </Badge>
             ))}
+          </div>
+        ) : formType === "personal" && personalInfo ? (
+          <div className="space-y-4 p-4">
+            <div className="rounded-xl bg-white shadow-sm border p-4">
+              <div className="grid grid-cols-3 gap-8">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-[#0A0F51] font-medium">
+                    <Flag className="w-4 h-4" />
+                    <span>Nationality</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    {personalInfo.nationality}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-[#0A0F51] font-medium">
+                    {/* <Calendar className="w-4 h-4" /> */}
+                    <span>Date of birth</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    {personalInfo.dateOfBirth}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-[#0A0F51] font-medium">
+                    <User className="w-4 h-4" />
+                    <span>Gender</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    {personalInfo.gender}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-white shadow-sm border p-4">
+              <div className="grid grid-cols-3 gap-8">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-[#0A0F51] font-medium">
+                    <Mail className="w-4 h-4" />
+                    <span>Email</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    {personalInfo.email}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-[#0A0F51] font-medium">
+                    <Phone className="w-4 h-4" />
+                    <span>Mobile number</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    {personalInfo.mobileNumber}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-white shadow-sm border p-4">
+              <div className="grid grid-cols-3 gap-8">
+                <div className="space-y-1">
+                  <div className="flex items-center  gap-2 text-[#0A0F51] font-medium">
+                    <Globe className="w-4 h-4" />
+                    <span className="">Region</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    {personalInfo.region}
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-[#0A0F51] font-medium">
+                    <MapPin className="w-4 h-4" />
+                    <span>City</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    {personalInfo.city}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
           <>
@@ -107,5 +205,5 @@ export default function InfoSection({
         {renderForm()}
       </CustomModal>
     </div>
-  )
+  );
 }

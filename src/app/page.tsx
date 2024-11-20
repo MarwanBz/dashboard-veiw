@@ -5,12 +5,12 @@ import ProfileBanner from "../components/profile-banner";
 
 export default function Home() {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-3 p-10">
+    <div className="container grid grid-cols-1 gap-6 md:grid-cols-3 p-10">
       <div className="col-span-1 md:col-span-3">
         <ProfileBanner />
       </div>
 
-      <div className="col-span-1 md:col-span-2">
+      <div className="container col-span-1 md:col-span-2">
         <InfoSection
           title="Personal Information"
           description="Add your personal information to maintain a professional profile."

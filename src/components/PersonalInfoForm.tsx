@@ -14,7 +14,8 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns"
 
 interface PersonalInfoFormProps {
-  onClose?: () => void
+  onClose?: () => void;
+  onSave: (data: any) => void;
 }
 
 
@@ -48,13 +49,14 @@ interface PersonalInfoFormProps {
   );
 }
 
-export default function PersonalInfoForm({ onClose }: PersonalInfoFormProps) {
-  const { control, handleSubmit } = useForm()
+export default function PersonalInfoForm({ onClose, onSave }: PersonalInfoFormProps) {
+  const { control, handleSubmit, register } = useForm();
 
   const onSubmit = (data: any) => {
-    console.log("Submitted data:", data)
-    if (onClose) onClose()
-  }
+    console.log("Submitted data:", data);
+    onSave(data);
+    if (onClose) onClose();
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[600px] space-y-6">
@@ -71,6 +73,7 @@ export default function PersonalInfoForm({ onClose }: PersonalInfoFormProps) {
               Nationality
             </label>
             <Input 
+              {...register("nationality")}
               placeholder="Ex, Saudi" 
               className="bg-[#F8F9FC] border-0 focus-visible:ring-1 focus-visible:ring-blue-500"
             />
@@ -82,8 +85,8 @@ export default function PersonalInfoForm({ onClose }: PersonalInfoFormProps) {
             <Controller
               control={control}
               name="dob"
-              render={({  }) => (
-                <DatePicker />
+              render={({ field }) => (
+                <DatePicker value={field.value} onChange={field.onChange} />
               )}
             />
           </div>
@@ -96,6 +99,7 @@ export default function PersonalInfoForm({ onClose }: PersonalInfoFormProps) {
             Gender
           </label>
           <Input 
+            {...register("gender")}
             placeholder="Ex, Male" 
             className="bg-[#F8F9FC] border-0 focus-visible:ring-1 focus-visible:ring-blue-500"
           />
@@ -108,6 +112,7 @@ export default function PersonalInfoForm({ onClose }: PersonalInfoFormProps) {
               Region
             </label>
             <Input 
+              {...register("region")}
               placeholder="Ex, Riyadh" 
               className="bg-[#F8F9FC] border-0 focus-visible:ring-1 focus-visible:ring-blue-500"
             />
@@ -118,6 +123,7 @@ export default function PersonalInfoForm({ onClose }: PersonalInfoFormProps) {
               City
             </label>
             <Input 
+              {...register("city")}
               placeholder="Ex, Riyadh" 
               className="bg-[#F8F9FC] border-0 focus-visible:ring-1 focus-visible:ring-blue-500"
             />
@@ -131,6 +137,7 @@ export default function PersonalInfoForm({ onClose }: PersonalInfoFormProps) {
               Mobile number
             </label>
             <Input 
+              {...register("mobileNumber")}
               placeholder="Ex, 049837" 
               type="tel"
               className="bg-[#F8F9FC] border-0 focus-visible:ring-1 focus-visible:ring-blue-500"
@@ -142,6 +149,7 @@ export default function PersonalInfoForm({ onClose }: PersonalInfoFormProps) {
               Email
             </label>
             <Input 
+              {...register("email")}
               placeholder="Ex, aa@gmail.com" 
               type="email"
               className="bg-[#F8F9FC] border-0 focus-visible:ring-1 focus-visible:ring-blue-500"
